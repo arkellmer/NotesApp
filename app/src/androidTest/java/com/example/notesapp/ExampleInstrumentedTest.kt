@@ -58,6 +58,24 @@ class DAOTests {
         dao.insertNote(NoteEntity(now, "test note"))
         val expected = NoteEntity(now, "test note")
         assertEquals(expected, dao.getAllNotesDesc().first()[0])
+        assertEquals(expected, dao.getAllNotesAsc().first()[0])
         assertEquals(1, dao.getAllNotesDesc().first().size)
+    }
+
+    @Test
+    fun testDeleteOne() = runBlocking {
+        val now = Date()
+        dao.insertNote(NoteEntity(now, "test note"))
+        dao.deleteNote(NoteEntity(now, "test note"))
+        assertEquals(0, dao.getAllNotesDesc().first().size)
+        assertEquals(0, dao.getAllNotesAsc().first().size)
+    }
+
+    @Test
+    fun testDeleteMissing() = runBlocking {
+        val now = Date()
+        dao.deleteNote(NoteEntity(now, "test note"))
+        assertEquals(0, dao.getAllNotesDesc().first().size)
+        assertEquals(0, dao.getAllNotesAsc().first().size)
     }
 }
