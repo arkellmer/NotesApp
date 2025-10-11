@@ -10,16 +10,15 @@ import com.example.notesapp.model.NoteDatabase
 import com.example.notesapp.model.NoteEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.After
 import java.io.IOException
 import java.util.Date
-import kotlin.jvm.Throws
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -50,6 +49,7 @@ class DAOTests {
     @Test
     fun testEmptyDB() = runBlocking {
         assertTrue(dao.getAllNotesDesc().first().isEmpty())
+        assertTrue(dao.getAllNotesAsc().first().isEmpty())
     }
 
     @Test
@@ -63,10 +63,24 @@ class DAOTests {
     }
 
     @Test
+    fun testUpdateOne() = runBlocking {
+        val now = Date()
+        dao.insertNote(NoteEntity(now, "test note"))
+        val updatedNote = dao.getAllNotesDesc().first()[0]
+        updatedNote.text = "updated test note"
+        dao.updateNote(updatedNote)
+        val expected = NoteEntity(now, "updated test note")
+        assertEquals(expected, dao.getAllNotesDesc().first()[0])
+        assertEquals(expected, dao.getAllNotesAsc().first()[0])
+        assertEquals(1, dao.getAllNotesDesc().first().size)
+    }
+
+    @Test
     fun testDeleteOne() = runBlocking {
         val now = Date()
         dao.insertNote(NoteEntity(now, "test note"))
-        dao.deleteNote(NoteEntity(now, "test note"))
+        val deletedNote = dao.getAllNotesDesc().first()[0]
+        dao.deleteNote(deletedNote)
         assertEquals(0, dao.getAllNotesDesc().first().size)
         assertEquals(0, dao.getAllNotesAsc().first().size)
     }
@@ -75,6 +89,17 @@ class DAOTests {
     fun testDeleteMissing() = runBlocking {
         val now = Date()
         dao.deleteNote(NoteEntity(now, "test note"))
+        assertEquals(0, dao.getAllNotesDesc().first().size)
+        assertEquals(0, dao.getAllNotesAsc().first().size)
+    }
+
+    @Test
+    fun testDeleteTwice() = runBlocking {
+        val now = Date()
+        dao.insertNote(NoteEntity(now, "test note"))
+        val deletedNote = dao.getAllNotesDesc().first()[0]
+        dao.deleteNote(deletedNote)
+        dao.deleteNote(deletedNote)
         assertEquals(0, dao.getAllNotesDesc().first().size)
         assertEquals(0, dao.getAllNotesAsc().first().size)
     }
