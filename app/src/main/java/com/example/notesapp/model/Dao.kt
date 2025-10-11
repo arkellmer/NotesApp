@@ -32,16 +32,16 @@ interface NoteDao {
     suspend fun updateNote(note: NoteEntity)
 
     /**
-     * Gets all notes from the database, descending order.
-     */
-    @Query("select * from notes order by id desc")
-    fun getAllNotesDesc(): Flow<List<NoteEntity>>
-
-    /**
      * Gets all notes from the database, ascending order.
      */
     @Query("select * from notes order by id asc")
     fun getAllNotesAsc(): Flow<List<NoteEntity>>
+
+    /**
+     * Gets all notes from the database, descending order.
+     */
+    @Query("select * from notes order by id desc")
+    fun getAllNotesDesc(): Flow<List<NoteEntity>>
 
     /**
      * Deletes a note from the database.
