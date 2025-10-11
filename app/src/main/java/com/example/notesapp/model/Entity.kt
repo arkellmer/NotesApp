@@ -17,6 +17,13 @@ class Converters {
     }
 }
 
+/**
+ * A note dataclass.
+ *
+ * @property timestamp the time of the note.
+ * @property text the text of the note.
+ * @property id the id of the note.
+ */
 @Entity(tableName = "notes")
 data class NoteEntity(
     var timestamp: Date,

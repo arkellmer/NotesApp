@@ -8,6 +8,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.notesapp.model.NoteDao
 import com.example.notesapp.model.NoteDatabase
 import com.example.notesapp.model.NoteEntity
+import com.example.notesapp.model.NoteRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -102,5 +105,30 @@ class DAOTests {
         dao.deleteNote(deletedNote)
         assertEquals(0, dao.getAllNotesDesc().first().size)
         assertEquals(0, dao.getAllNotesAsc().first().size)
+    }
+}
+
+@RunWith(AndroidJUnit4::class)
+class RepositoryTests {
+
+    private lateinit var repository: NoteRepository
+    private lateinit var dao: NoteDao
+    private lateinit var db: NoteDatabase
+    private val scope = CoroutineScope(Job())
+
+    @Before
+    fun createRepository() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        db = Room.inMemoryDatabaseBuilder(context, NoteDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        dao = db.noteDao()
+        repository = NoteRepository(scope, dao)
+    }
+
+    @After
+    fun close() {
+        db.close()
+        repository = 
     }
 }
