@@ -6,22 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.notesapp.screens.HomeScreen
-import com.example.notesapp.screens.SplashScreen
 import com.example.notesapp.viewmodel.NoteViewModel
 
 object Routes {
-    const val Splash = "splash"
-    const val Home = "home"
+    const val HOME = "home"
 }
 
 @Composable
 fun NavHost(nav: NavHostController = rememberNavController(), vm: NoteViewModel) {
-    NavHost(nav, Routes.Splash) {
-        composable(Routes.Splash) {
-            SplashScreen(nav)
-        }
+    NavHost(nav, Routes.HOME) {
 
-        composable(Routes.Home) {
+        composable(Routes.HOME) {
             HomeScreen(nav, vm)
         }
     }
