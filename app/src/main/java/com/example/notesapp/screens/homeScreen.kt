@@ -6,22 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -34,7 +27,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,17 +50,12 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
         modifier = Modifier.fillMaxSize()
     ) {
 
+        NotifSpacer()
+
         Column(
             Modifier
                 .padding( 8.dp)
         ) {
-
-            Spacer(
-                Modifier
-                    .windowInsetsTopHeight(WindowInsets.systemBars)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-            )
 
             Row(
                 Modifier
@@ -91,9 +78,9 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = Color.Black,
-                            disabledContainerColor = Color.Gray,
-                            disabledContentColor = Color.Black
+                            contentColor = MaterialTheme.colorScheme.onSecondary,
+                            disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
+                            disabledContentColor = MaterialTheme.colorScheme.onSecondary
                         ),
                         onClick = {
                             isAsc = !isAsc
@@ -119,9 +106,9 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = Color.Black,
-                            disabledContainerColor = Color.Gray,
-                            disabledContentColor = Color.Black
+                            contentColor = MaterialTheme.colorScheme.onSecondary,
+                            disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
+                            disabledContentColor = MaterialTheme.colorScheme.onSecondary
                             ),
                         onClick = {
                             vm.insertNote("")
@@ -135,12 +122,7 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
             }
             }
 
-            HorizontalDivider(
-                Modifier
-                    .height(1.dp)
-                    .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.secondary
-            )
+            ContentDivider()
 
             val notesAsc by vm.notesAsc.collectAsState(listOf())
             val notesDesc by vm.notesDesc.collectAsState(listOf())
@@ -167,20 +149,10 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 }
             }
 
-            HorizontalDivider(
-                Modifier
-                    .height(1.dp)
-                    .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.secondary
-            )
-
-            Spacer(
-                Modifier
-                    .windowInsetsBottomHeight(WindowInsets.systemBars)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-            )
+            ContentDivider()
         }
+
+        CtrlSpacer()
     }
 }
 
