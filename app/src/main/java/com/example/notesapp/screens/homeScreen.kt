@@ -50,12 +50,12 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
         modifier = Modifier.fillMaxSize()
     ) {
 
-        NotifSpacer()
-
         Column(
             Modifier
                 .padding( 8.dp)
         ) {
+
+            NotifSpacer()
 
             Row(
                 Modifier
@@ -150,9 +150,9 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
             }
 
             ContentDivider()
-        }
 
-        CtrlSpacer()
+            CtrlSpacer()
+        }
     }
 }
 
@@ -207,10 +207,17 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                         }
                     }
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.pen_square_svgrepo_com),
-                        contentDescription = "Pen symbol. Source: https://www.svgrepo.com/svg/532995/pen-square"
-                    )
+                    if (isEditing) {
+                        Image(
+                            painter = painterResource(R.drawable.square_check_svgrepo_com),
+                            contentDescription = "Check mark symbol. Source: https://www.svgrepo.com/svg/532214/square-check"
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.pen_square_svgrepo_com),
+                            contentDescription = "Pen symbol. Source: https://www.svgrepo.com/svg/532995/pen-square"
+                        )
+                    }
                 }
 
                 Button(
