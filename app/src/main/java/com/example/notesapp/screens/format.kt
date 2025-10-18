@@ -14,6 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Spacer used to ensure notifications bar
+ * is not drawn under.
+ */
 @Composable
 fun NotifSpacer() {
     Spacer(
@@ -24,6 +28,10 @@ fun NotifSpacer() {
     )
 }
 
+/**
+ * Spacer used to ensure user controls (nav bar, keyboard, etc.)
+ * are not drawn under.
+ */
 @Composable
 fun CtrlSpacer() {
     Spacer(
@@ -34,6 +42,10 @@ fun CtrlSpacer() {
     )
 }
 
+/**
+ * HorizontalDivider used to emphasize different segments
+ * of the screen.
+ */
 @Composable
 fun ContentDivider() {
     HorizontalDivider(
