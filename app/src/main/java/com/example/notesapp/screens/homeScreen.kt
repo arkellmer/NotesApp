@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -148,23 +149,20 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 Modifier.weight(1f)
             ) {
                 if (isAsc) {
-                    for (note in notesAsc) {
-                        item {
-                            NoteDataDisplay(note,
-                                {note, text -> vm.updateNote(note, text)},
-                                {note -> vm.deleteNote(note)}
-                            )
-                        }
+                    items(notesAsc, key = { note -> note.id }) { note ->
+                        NoteDataDisplay(
+                            note,
+                            { note, text -> vm.updateNote(note, text) },
+                            { note -> vm.deleteNote(note) }
+                        )
                     }
                 } else {
-                    for (note in notesDesc) {
-                        item {
-                            NoteDataDisplay(
-                                note,
-                                {note, text -> vm.updateNote(note, text)},
-                                {vm.deleteNote(it)}
-                            )
-                        }
+                    items(notesDesc, key = { note -> note.id }) { note ->
+                        NoteDataDisplay(
+                            note,
+                            { note, text -> vm.updateNote(note, text) },
+                            { note -> vm.deleteNote(note) }
+                        )
                     }
                 }
             }
@@ -228,8 +226,13 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                     onClick = {
                         if (isEditing && editedText != note.text) {
                             editCallback(note, editedText)
+                            isEditing = false
+                        } else if (isEditing) {
+                            isEditing = false
+                        } else {
+                            editedText = note.text
+                            isEditing = true
                         }
-                        isEditing = !isEditing
                     }
                 ) {
                     Image(
