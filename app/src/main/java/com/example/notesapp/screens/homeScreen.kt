@@ -7,14 +7,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -28,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,9 +62,16 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 .padding( 8.dp)
         ) {
 
+            Spacer(
+                Modifier
+                    .windowInsetsTopHeight(WindowInsets.systemBars)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+            )
+
             Row(
                 Modifier
-                    .padding(16.dp)
+                    .padding(16.dp, 4.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -75,6 +88,12 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                             .size(48.dp),
                         contentPadding = PaddingValues(0.dp),
                         shape = RoundedCornerShape(8.dp),
+                        colors = ButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = Color.Black,
+                            disabledContainerColor = Color.Gray,
+                            disabledContentColor = Color.Black
+                        ),
                         onClick = {
                             isAsc = !isAsc
                         }
@@ -97,6 +116,12 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                             .size(48.dp),
                         contentPadding = PaddingValues(0.dp),
                         shape = RoundedCornerShape(8.dp),
+                        colors = ButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = Color.Black,
+                            disabledContainerColor = Color.Gray,
+                            disabledContentColor = Color.Black
+                            ),
                         onClick = {
                             vm.insertNote("")
                         }
@@ -113,7 +138,7 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 Modifier
                     .height(1.dp)
                     .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.secondary
             )
 
             val notesAsc by vm.notesAsc.collectAsState(listOf())
@@ -148,12 +173,12 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 Modifier
                     .height(1.dp)
                     .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Spacer(
                 Modifier
-                    .height(40.dp)
+                    .windowInsetsBottomHeight(WindowInsets.systemBars)
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
             )
@@ -176,12 +201,12 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(8.dp, 4.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
-            val formatter = SimpleDateFormat("h:mm E, MMM dd yyyy", Locale.getDefault())
+            val formatter = SimpleDateFormat("h:mm MM/dd/yyyy", Locale.getDefault())
             Text(formatter.format(note.timestamp))
 
             Row(
@@ -194,8 +219,14 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                         .size(48.dp, 24.dp),
                     contentPadding = PaddingValues(0.dp),
                     shape = RoundedCornerShape(8.dp),
+                    colors = ButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        disabledContainerColor = MaterialTheme.colorScheme.onSurface,
+                        disabledContentColor = MaterialTheme.colorScheme.onSurface
+                    ),
                     onClick = {
-                        if (isEditing) {
+                        if (isEditing && editedText != note.text) {
                             editCallback(note, editedText)
                         }
                         isEditing = !isEditing
@@ -212,6 +243,12 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                         .size(48.dp, 24.dp),
                     contentPadding = PaddingValues(0.dp),
                     shape = RoundedCornerShape(8.dp),
+                    colors = ButtonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
+                        disabledContainerColor = MaterialTheme.colorScheme.onTertiary,
+                        disabledContentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     onClick = {
                         deleteCallback(note)
                     }
@@ -226,15 +263,21 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
 
         Row(
             Modifier
-                .padding(8.dp, 4.dp)
+                .padding(8.dp, 0.dp)
         ) {
             if (isEditing) {
                 OutlinedTextField(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth(),
                     value = editedText,
                     onValueChange = { editedText= it }
                 )
             } else {
-                Text(note.text)
+                Text(
+                    note.text,
+                    Modifier.padding(bottom = 8.dp)
+                )
             }
         }
     }
