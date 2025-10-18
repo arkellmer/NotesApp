@@ -88,13 +88,13 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                     ) {
                         if (isAsc) {
                             Image(
-                                painter = painterResource(R.drawable.arrow_square_up_svgrepo_com),
-                                contentDescription = "Up symbol. Source: https://www.svgrepo.com/svg/533629/arrow-square-up"
+                                painter = painterResource(R.drawable.arrow_square_down_svgrepo_com),
+                                contentDescription = "Down symbol. Source: https://www.svgrepo.com/svg/533622/arrow-square-down"
                             )
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.arrow_square_down_svgrepo_com),
-                                contentDescription = "Down symbol. Source: https://www.svgrepo.com/svg/533622/arrow-square-down"
+                                painter = painterResource(R.drawable.arrow_square_up_svgrepo_com),
+                                contentDescription = "Up symbol. Source: https://www.svgrepo.com/svg/533629/arrow-square-up"
                             )
                         }
                     }
