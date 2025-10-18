@@ -2,13 +2,10 @@ package com.example.notesapp
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.safeContent
 import androidx.navigation.compose.rememberNavController
 import com.example.notesapp.navigation.NavHost
 import com.example.notesapp.ui.theme.NotesAppTheme
@@ -26,6 +23,7 @@ class MainActivity : ComponentActivity() {
             NotesAppTheme {
                 val vm: NoteViewModel by viewModels { NoteViewModelProvider.Factory }
                 val nav = rememberNavController()
+
                 NavHost(nav, vm)
             }
         }
