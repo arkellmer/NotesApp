@@ -1,8 +1,10 @@
 package com.example.notesapp.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,11 +28,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.notesapp.R
 import com.example.notesapp.model.NoteEntity
 import com.example.notesapp.ui.theme.NotesAppTheme
 import com.example.notesapp.viewmodel.NoteViewModel
@@ -40,6 +44,8 @@ import java.util.Locale
 
 @Composable
 fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
+
+    var isAsc by rememberSaveable { mutableStateOf(true) }
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -60,14 +66,47 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
 
                 Text("Notes", fontSize = 48.sp, fontWeight = FontWeight.Bold)
 
-                Button(
-                    modifier = Modifier
-                        .size(48.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    onClick = {
-                        vm.insertNote("")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    Button(
+                        modifier = Modifier
+                            .size(48.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        onClick = {
+                            isAsc = !isAsc
+                        }
+                    ) {
+                        if (isAsc) {
+                            Image(
+                                painter = painterResource(R.drawable.arrow_square_up_svgrepo_com),
+                                contentDescription = "Up symbol. Source: https://www.svgrepo.com/svg/533629/arrow-square-up"
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.arrow_square_down_svgrepo_com),
+                                contentDescription = "Down symbol. Source: https://www.svgrepo.com/svg/533622/arrow-square-down"
+                            )
+                        }
                     }
-                ) {}
+
+                    Button(
+                        modifier = Modifier
+                            .size(48.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        onClick = {
+                            vm.insertNote("")
+                        }
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.square_medical_svgrepo_com),
+                            contentDescription = "Plus symbol. Source: https://www.svgrepo.com/svg/532482/square-medical"
+                        )
+                    }
+            }
             }
 
             HorizontalDivider(
@@ -77,7 +116,6 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                 color = MaterialTheme.colorScheme.tertiary
             )
 
-            val isAsc by rememberSaveable { mutableStateOf(true) }
             val notesAsc by vm.notesAsc.collectAsState(listOf())
             val notesDesc by vm.notesDesc.collectAsState(listOf())
 
@@ -128,7 +166,7 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
 
     Column(
         Modifier
-            .padding(8.dp, 8.dp)
+            .padding(8.dp)
             .background(MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(8.dp))
     ) {
 
@@ -153,7 +191,8 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
 
                 Button(
                     modifier = Modifier
-                        .size(24.dp),
+                        .size(48.dp, 24.dp),
+                    contentPadding = PaddingValues(0.dp),
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
                         if (isEditing) {
@@ -161,16 +200,27 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                         }
                         isEditing = !isEditing
                     }
-                ) {}
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.pen_square_svgrepo_com),
+                        contentDescription = "Pen symbol. Source: https://www.svgrepo.com/svg/532995/pen-square"
+                    )
+                }
 
                 Button(
                     modifier = Modifier
-                        .size(24.dp),
+                        .size(48.dp, 24.dp),
+                    contentPadding = PaddingValues(0.dp),
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
                         deleteCallback(note)
                     }
-                ) {}
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.trash_svgrepo_com),
+                        contentDescription = "X symbol. Source: https://www.svgrepo.com/svg/533007/trash"
+                    )
+                }
             }
         }
 
@@ -194,6 +244,6 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
 @Composable
 fun NoteDataDisplayPreview() {
     NotesAppTheme {
-        NoteDataDisplay(NoteEntity(Date(),"test text"), {a, b ->}, {})
+        NoteDataDisplay(NoteEntity(Date(),"test text"), {a, b -> {}}, {})
     }
 }
