@@ -1,6 +1,5 @@
 package com.example.notesapp.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -87,14 +95,16 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                         }
                     ) {
                         if (isAsc) {
-                            Image(
-                                painter = painterResource(R.drawable.arrow_square_down_svgrepo_com),
-                                contentDescription = "Down symbol. Source: https://www.svgrepo.com/svg/533622/arrow-square-down"
+                            Icon(
+                                imageVector = Icons.Default.ArrowDownward,
+                                contentDescription = "Arrow downward",
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         } else {
-                            Image(
-                                painter = painterResource(R.drawable.arrow_square_up_svgrepo_com),
-                                contentDescription = "Up symbol. Source: https://www.svgrepo.com/svg/533629/arrow-square-up"
+                            Icon(
+                                imageVector = Icons.Default.ArrowUpward,
+                                contentDescription = "Arrow upward",
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -114,9 +124,10 @@ fun HomeScreen(nav: NavHostController, vm: NoteViewModel) {
                             vm.insertNote("")
                         }
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.square_medical_svgrepo_com),
-                            contentDescription = "Plus symbol. Source: https://www.svgrepo.com/svg/532482/square-medical"
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
             }
@@ -208,14 +219,16 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                     }
                 ) {
                     if (isEditing) {
-                        Image(
-                            painter = painterResource(R.drawable.square_check_svgrepo_com),
-                            contentDescription = "Check mark symbol. Source: https://www.svgrepo.com/svg/532214/square-check"
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Check",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     } else {
-                        Image(
-                            painter = painterResource(R.drawable.pen_square_svgrepo_com),
-                            contentDescription = "Pen symbol. Source: https://www.svgrepo.com/svg/532995/pen-square"
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -232,13 +245,28 @@ fun NoteDataDisplay(note: NoteEntity, editCallback: (NoteEntity, String) -> Unit
                         disabledContentColor = MaterialTheme.colorScheme.onTertiary
                     ),
                     onClick = {
-                        deleteCallback(note)
+                        if (isEditing) {
+                            isEditing = false
+                        }
+                        else {
+                            deleteCallback(note)
+                        }
                     }
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.trash_svgrepo_com),
-                        contentDescription = "X symbol. Source: https://www.svgrepo.com/svg/533007/trash"
-                    )
+                    if (isEditing) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    else {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
         }
